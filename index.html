@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
 </head>
 <body>
     <h1>Shape-editor</h1>
+    <button onclick='toggleMode(editorModes.pan)'>Toggle Pan</button>
+    <button onclick='toggleMode(editorModes.draw)'>Toggle Draw</button>
     <canvas id="canvas"></canvas>
     <script src="lib/fabric.min.js"></script>
     <script src="js/index.js"></script>
