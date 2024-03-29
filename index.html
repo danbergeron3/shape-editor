@@ -9,16 +9,18 @@
 <body>
     <h1>Shape-editor</h1>
     <button onclick='toggleMode(editorModes.pan)'>Toggle Pan</button>
-    <button onclick='toggleMode(editorModes.draw)'>Toggle Draw</button>
+    <button onclick='toggleMode(editorModes.sketch)'>Toggle Sketch</button>
+    <button onclick='toggleMode(editorModes.shape)'>Toggle Draw</button>
     <input id=colorPicker value="#3399FF80" data-jscolor="{}">
     <button onclick='clearCanvas(canvas)'>Clear</button>
     <canvas id="canvas"></canvas>
-    <h2>Shape Menu</h2>
+    <h2>Draw Menu</h2>
     <button onclick='createRect(canvas)'>Rectangle</button>
     <button onclick='createCirc(canvas)'>Circle</button>
-    <button onclick='createLine(canvas)'>Line</button>
+    <button onclick='setLine(canvas)'>Line</button>
     <button onclick='createSquare(canvas)'>Square</button>
     <button onclick='createPoly(canvas)'>Polygon</button>
+    <button onclick='setTriangle(canvas)'>Trianlge</button>
 
     <script src="lib/jscolor.js"></script>
     <script src="lib/fabric.min.js"></script>
