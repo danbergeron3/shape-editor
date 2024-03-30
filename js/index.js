@@ -39,20 +39,25 @@ const shape = {
 
 
 const initCanvas = (id) => {
-    const canvas = new fabric.Canvas('canvas', {
-        width: 1000,
-        height: 600,
-        backgroundColor: 'grey'
+
+    const canvasEl = document.getElementById(id);
+
+    // Set canvas dimensions to match the window size
+    canvasEl.width = window.innerWidth;
+    canvasEl.height = window.innerHeight;
+
+    const canvas = new fabric.Canvas(id, {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        backgroundColor: '#F1F2F3'
+        // Other canvas options...
     });
 
-    // Scale down the canvas to increase the drawable area
     var scaleFactor = 2; // Example scale factor (50%)
     canvas.setZoom(scaleFactor);
 
-    // Optional: Set up panning (or other navigation controls)
-    // This depends on how you want to allow users to navigate the larger area
-
     return canvas;
+   
 }
 
 const clearCanvas = (canvas) => {
@@ -147,7 +152,7 @@ function drawGrid(gridSize) {
     // Draw vertical lines
     for (let i = 0; i <= numLinesX; i++) {
         canvas.add(new fabric.Line([startX + i * gridLength, -height, startX + i * gridLength, 2 * height], {
-            stroke: '#ccc',
+            stroke: '#3B3B3B',
             selectable: false,
             evented: false,
             gridLine: true
@@ -157,7 +162,7 @@ function drawGrid(gridSize) {
     // Draw horizontal lines
     for (let j = 0; j <= numLinesY; j++) {
         canvas.add(new fabric.Line([-width, startY + j * gridLength, 2 * width, startY + j * gridLength], {
-            stroke: '#ccc',
+            stroke: '#3B3B3B',
             selectable: false,
             evented: false,
             gridLine: true
@@ -731,6 +736,12 @@ function snapToGridOnScaling(target) {
     });
 }
 
+
+window.addEventListener('resize', function() {
+    canvas.setWidth(window.innerWidth);
+    canvas.setHeight(window.innerHeight);
+    canvas.renderAll();
+});
 // // Event handler for when an object is moving
 // canvas.on('object:moving', function(options) {
 //     if (options.target) {
