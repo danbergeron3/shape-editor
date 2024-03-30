@@ -6,12 +6,11 @@ let selectedShape;
 let mousePressed = false; 
 
 
-
 /// for undo & redo 
 let history = [];
 let index = -1;
 
-
+let isGridVisible = true;
 
 
 let startPoints = {
@@ -22,7 +21,8 @@ let startPoints = {
 const editorModes = {
     pan: 'pan',
     sketch: 'sketch',
-    shape: 'shape'
+    shape: 'shape',
+    snapToGrid: 'snapToGrid',
 }
 const shape = {
     circle: 'circle',
@@ -39,11 +39,20 @@ const shape = {
 
 
 const initCanvas = (id) => {
-    return new fabric.Canvas('canvas', {
+    const canvas = new fabric.Canvas('canvas', {
         width: 1000,
         height: 600,
         backgroundColor: 'grey'
     });
+
+    // Scale down the canvas to increase the drawable area
+    var scaleFactor = 2; // Example scale factor (50%)
+    canvas.setZoom(scaleFactor);
+
+    // Optional: Set up panning (or other navigation controls)
+    // This depends on how you want to allow users to navigate the larger area
+
+    return canvas;
 }
 
 const clearCanvas = (canvas) => {
@@ -52,104 +61,50 @@ const clearCanvas = (canvas) => {
             canvas.remove(element);
         }
     });
+    isGridVisible = false;
 };
+
+const createPolyLine = (canvas) => {
+    console.log("poly_line");
+    currentMode = editorModes.shape;
+    currentShapetype = shape.poly_line;
+}
+
+const createCurve = (canvas) => {
+    console.log('curve')
+    currentMode = editorModes.shape;
+    currentShapetype = shape.curve;
+}
+
+const setEllipse = (canvas) => {
+    currentMode = editorModes.shape;
+    currentShapetype = shape.ellipse;
+}
 
 const createRect = (canvas) => {
     currentMode = editorModes.shape;
     currentShapetype = shape.rectangle;
-    // console.log("rect");
-    // const canvCenter = canvas.getCenter();
-    // const rect = new fabric.Rect({
-    //     width: 200,
-    //     height: 100,
-    //     fill: currentColor,
-    //     left: canvCenter.left,
-    //     top: canvCenter.top,
-    //     originX: 'center',
-    //     originY: 'center',
-    //     cornerColor: '#007FFF',
-    // });
-    // canvas.add(rect);
-    // canvas.renderAll();
 }
 
 const createCirc = (canvas) => {
     console.log("circ");
     currentMode = 'shape';
     currentShapetype = 'circle';
-    // const canvCenter = canvas.getCenter();
-    // const circ = new fabric.Circle({
-    //     radius: 100,
-    //     fill: currentColor,
-    //     left: canvCenter.left,
-    //     top: canvCenter.top,
-    //     originX: 'center',
-    //     originY: 'center',
-    //     cornerColor: '#007FFF',
-    // });
-    // canvas.add(circ);
-    // canvas.renderAll();
-    
+
 }
 
 const setLine = (canvas) => {
     console.log("line");
     currentMode = 'shape';
     currentShapetype = 'line';
-    // let line;
-    // canvas.on('mouse:down', (event) => {
-        
-    // });
-    // canvas.on('mouse:move', (event) => {
-    //     let pointer = canvas.getPointer(event.e);
-    //     line.set({
-    //         x2: pointer.x,
-    //         y2: pointer.y
-    //     });
-    //     canvas.renderAll();
-    // });
-
-    
-
-    // canvas.on('mouse:up', (event) => {
-        
-    // });    
-    // const line = new fabric.Line([50, 100, 200, 200],{
-    //     fill:  currentColor,
-    //     stroke: currentColor,
-    //     strokeWidth: 2,
-    //     left: canvCenter.left,
-    //     top: canvCenter.top,
-    //     originX: 'center',
-    //     originY: 'center',
-    //     cornerColor: '#007FFF',
-    // });
-    // canvas.add(line);
-    // canvas.renderAll();
 }
+
 
 const createPoly = (canvas) => {
     
     currentMode = editorModes.shape;
     currentShapetype = shape.polygon;
-    // console.log("line");
-    // const canvCenter = canvas.getCenter();
-    
-    // const poly = new fabric.Polygon([ 
-    //     { x: 200, y: 10 }, 
-    //     { x: 250, y: 50 }, 
-    //     { x: 250, y: 180}, 
-    //     { x: 150, y: 180}, 
-    //     { x: 150, y: 50 }],{
-    //     fill:  currentColor,
-    //     left: canvCenter.left,
-    //     top: canvCenter.top,
-    //     originX: 'center',
-    //     originY: 'center',
-    //     cornerColor: '#007FFF',
-    // });
-    // canvas.add(poly);
-    // canvas.renderAll();
+
 }
 
 const setTriangle = (canvas) => {
@@ -161,86 +116,66 @@ const createSquare = (canvas) => {
     console.log("square");
     currentMode = editorModes.shape;
     currentShapetype = shape.square;
-    // const canvCenter = canvas.getCenter();
-    // const square = new fabric.Rect({
-    //     width: 100,
-    //     height: 100,
-    //     fill: currentColor,
-    //     left: canvCenter.left,
-    //     top: canvCenter.top,
-    //     originX: 'center',
-    //     originY: 'center',
-    //     cornerColor: '#007FFF',
-
-    // });
-    // canvas.add(square);
-    // canvas.renderAll();
 }
 
 
 
 const canvas = initCanvas('canvas');
-// fabric.Image.fromURL('https://wallpapers.com/images/high/red-raspberries-and-daisy-flower-roldn198zsn76ez3.jpg', (img) => {
-//     canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-//         // Options to control the background image
-//         scaleX: canvas.width / img.width,
-//         scaleY: canvas.height / img.height
-//     });
-// });
-// function drawGrid(gridSize) {
-//     const gridLength = gridSize || 50; // Default grid size is 50px
-//     const width = canvas.width;
-//     const height = canvas.height;
-
-//     for (var i = 0; i < (width / gridLength); i++) {
-//         canvas.add(new fabric.Line([i * gridLength, 0, i * gridLength, height], {
-//             stroke: '#ccc',
-//             selectable: false
-//         }));
-//     }
-
-//     for (var j = 0; j < (height / gridLength); j++) {
-//         canvas.add(new fabric.Line([0, j * gridLength, width, j * gridLength], {
-//             stroke: '#ccc',
-//             selectable: false
-//         }));
-//     }
-// }
 
 function drawGrid(gridSize) {
-    const gridLength = gridSize || 50;
-    
-    // Clear existing grid lines
-    canvas.getObjects('line').forEach(function(line) {
+    const gridLength = gridSize || 25;
+    canvas.getObjects('line').forEach(line => {
         if (line.gridLine) canvas.remove(line);
     });
 
-    const vpt = canvas.viewportTransform;
     const zoom = canvas.getZoom();
-    const width = canvas.width / zoom;
-    const height = canvas.height / zoom;
-    const vptX = vpt[4] / zoom;
-    const vptY = vpt[5] / zoom;
+    const vpt = canvas.viewportTransform;
+    const width = canvas.getWidth();
+    const height = canvas.getHeight();
 
-    for (var i = -Math.ceil(vptX / gridLength); i < (width / gridLength) - vptX / gridLength; i++) {
-        canvas.add(new fabric.Line([i * gridLength, -height, i * gridLength, height], {
+    const offsetX = -vpt[4] / zoom; // Correct for negative offsets
+    const offsetY = -vpt[5] / zoom;
+
+    // Number of grid lines needed in each direction
+    const numLinesX = Math.ceil(width / gridLength) + Math.ceil(Math.abs(offsetX) / gridLength);
+    const numLinesY = Math.ceil(height / gridLength) + Math.ceil(Math.abs(offsetY) / gridLength);
+
+    // Start drawing from the furthest negative offset
+    const startX = Math.floor(offsetX / gridLength) * gridLength;
+    const startY = Math.floor(offsetY / gridLength) * gridLength;
+
+    // Draw vertical lines
+    for (let i = 0; i <= numLinesX; i++) {
+        canvas.add(new fabric.Line([startX + i * gridLength, -height, startX + i * gridLength, 2 * height], {
             stroke: '#ccc',
             selectable: false,
-            gridLine: true // Custom property to indicate it's a grid line
-        }));
-    }
-
-    for (var j = -Math.ceil(vptY / gridLength); j < (height / gridLength) - vptY / gridLength; j++) {
-        canvas.add(new fabric.Line([-width, j * gridLength, width, j * gridLength], {
-            stroke: '#ccc',
-            selectable: false,
+            evented: false,
             gridLine: true
         }));
     }
+
+    // Draw horizontal lines
+    for (let j = 0; j <= numLinesY; j++) {
+        canvas.add(new fabric.Line([-width, startY + j * gridLength, 2 * width, startY + j * gridLength], {
+            stroke: '#ccc',
+            selectable: false,
+            evented: false,
+            gridLine: true
+        }));
+    }
+
+    canvas.getObjects('line').forEach(line => {
+        if (line.gridLine) {
+            canvas.sendToBack(line);
+        }
+    });
+    canvas.renderAll();
 }
 
 
-let isGridVisible = false;
+
+
+
 
 function toggleGrid() {
     // Remove existing grid lines
@@ -292,13 +227,54 @@ const toggleMode = (mode) => {
             currentMode = '';
             currentShapetype = '';
         }
+    } else if (mode === editorModes.snapToGrid) {
+        if(currentMode === editorModes.snapToGrid) {
+            currentMode = '';
+            canvas.off('object:rotating');
+            canvas.off('object:scaling');
+            canvas.off('object:moving');
+        } else {
+            currentMode = editorModes.snapToGrid;
+        }
     }
     console.log(mode);
 };
 
+// Predefined radius for the pentagon
+const predefinedRadius = 50; // Adjust this value as needed
+
+// Utility function to create pentagon points
+function createPentagonPoints(center, radius) {
+    let points = [];
+    for (let i = 0; i < 5; i++) {
+        const angle = 2 * Math.PI / 5 * i - Math.PI / 2; // Adjust to start from the top
+        const x = center.x + radius * Math.cos(angle);
+        const y = center.y + radius * Math.sin(angle);
+        points.push({ x: x, y: y });
+    }
+    return points;
+}
+
+var curvePoints = {
+    startPoint: null,
+    controlPoint: null,
+    endPoint: null
+};
+var drawingCurveState = 0;
+
+const drawCurve = (canvas, start, control, end) => {
+    const path = new fabric.Path(`M ${start.x} ${start.y} Q ${control.x} ${control.y}, ${end.x} ${end.y}`, {
+        fill: 'transparent',
+        stroke: currentColor,
+        strokeWidth: 2,
+    });
+    canvas.add(path);
+    canvas.renderAll();
+};
+
 const setPanEvents = (canvas) => {
     canvas.on('mouse:move', (event) => {
-        if(mousePressed && currentMode === 'pan') {
+        if(mousePressed && currentMode === editorModes.pan) {
             // for panning
             canvas.setCursor('grab');
             canvas.renderAll();
@@ -351,20 +327,6 @@ const setPanEvents = (canvas) => {
         
                 selectedShape.set({ width: size, height: size });
                 canvas.renderAll();
-            } // polygon 
-            else if (currentShapetype === shape.polygon) {
-                let pointer = canvas.getPointer(event.e);
-               
-                let vertices = [
-                    { x: startPoints.x, y: startPoints.y },
-                    { x: pointer.x, y: startPoints.y },
-                    { x: pointer.x, y: pointer.y },
-                    { x: startPoints.x - (pointer.x - startPoints.x), y: pointer.y },
-                    { x: startPoints.x - (pointer.x - startPoints.x), y: startPoints.y }
-                ];
-            
-                selectedShape.set({ points: vertices });
-                canvas.renderAll();
             } // triangle 
             else if (currentShapetype === shape.triangle) {
                 let pointer = canvas.getPointer(event.e);
@@ -372,6 +334,13 @@ const setPanEvents = (canvas) => {
                 let height = Math.abs(pointer.y - startPoints.y);
 
                 selectedShape.set({ width: width, height: height });
+                canvas.renderAll();
+            } else if (mousePressed && currentShapetype === shape.ellipse) {
+                let pointer = canvas.getPointer(event.e);
+                let rx = Math.abs(pointer.x - startPoints.x) / 2;
+                let ry = Math.abs(pointer.y - startPoints.y) / 2;
+    
+                selectedShape.set({ rx: rx, ry: ry });
                 canvas.renderAll();
             }
         }
@@ -445,21 +414,6 @@ const setPanEvents = (canvas) => {
                     cornerColor: '#007FFF'
                 });
                 canvas.add(selectedShape);
-            }// polygon 
-            else if (currentShapetype === shape.polygon) {
-                let pointer = canvas.getPointer(event.e);
-                startPoints = { x: pointer.x, y: pointer.y };
-                selectedShape = new fabric.Polygon([{ x: pointer.x, y: pointer.y }, 
-                        { x: pointer.x, y: pointer.y }, 
-                        { x: pointer.x, y: pointer.y}, 
-                        { x: pointer.x, y: pointer.y}, 
-                        { x: pointer.x, y: pointer.y}], {
-                    fill: currentColor,
-                    selectable: false,
-                    originX: 'center',
-                    originY: 'center'
-                });
-                canvas.add(selectedShape);
             } // triangle
             else if (currentShapetype === shape.triangle) {
                 let pointer = canvas.getPointer(event.e);
@@ -475,7 +429,71 @@ const setPanEvents = (canvas) => {
                     cornerColor: '#007FFF'
                 });
                 canvas.add(selectedShape);
+            } else if (currentShapetype === shape.polygon) {
+                let pointer = canvas.getPointer(event.e);
+                let pentagonPoints = createPentagonPoints(pointer, predefinedRadius);
+                let pentagon = new fabric.Polygon(pentagonPoints, {
+                    fill: currentColor,
+                    cornerColor: '#007FFF',
+                    originX: 'center',
+                    originY: 'center',
+                });
+                canvas.add(pentagon);
+                canvas.renderAll();
+            } else if (currentShapetype === shape.ellipse) {
+                let pointer = canvas.getPointer(event.e);
+                startPoints = { x: pointer.x, y: pointer.y };
+                selectedShape = new fabric.Ellipse({
+                    // Start with a small ellipse
+                    rx: 1, 
+                    ry: 1,
+                    left: pointer.x,
+                    top: pointer.y,
+                    fill: currentColor,
+                    originX: 'center',
+                    originY: 'center'
+                });
+                canvas.add(selectedShape);
+            } else if (currentShapetype === shape.curve) {
+                let pointer = canvas.getPointer(event.e);
+    
+                let startPoint = canvas.getPointer(event.e);
+
+                // For simplicity, control point and end point are predefined
+                let controlPoint = { x: startPoint.x + 50, y: startPoint.y - 50 }; // Adjust as needed
+                let endPoint = { x: startPoint.x + 100, y: startPoint.y };
+    
+                // Draw the curve
+                drawCurve(canvas, startPoint, controlPoint, endPoint);
             }
+        } else if (currentMode === editorModes.snapToGrid) {
+            // Event handler for when an object is moving
+            canvas.on('object:moving', function(options) {
+                if (options.target) {
+                    snapToGrid(options.target);
+                }
+            });
+
+            // Event handler for when an object is scaling
+            canvas.on('object:scaling', function(options) {
+                if (options.target) {
+                    snapToGridOnScaling(options.target);
+                }
+            });
+
+            // Continue handling other events like object moving
+            canvas.on('object:moving', function(options) {
+                if (options.target) {
+                    snapToGrid(options.target);
+                }
+            });
+
+            canvas.on('object:rotating', function(options) {
+                if (options.target) {
+                    snapToRotation(options.target);
+                    options.target.setCoords(); // Recalculate the object's coordinates
+                }
+            });
         } 
     });
 
@@ -671,5 +689,73 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
 document.getElementById('saveButton').addEventListener('click', downloadJson);
 document.getElementById('grid').addEventListener('click', toggleGrid);
 
+// Assuming a grid size of 25 as used in your drawGrid function
+const gridSize = 25;
+const rotationSnap = 15; 
 
+function snapToGrid(target) {
+    // Snap object's left and top properties to the nearest grid points
+    target.set({
+        left: Math.round(target.left / gridSize) * gridSize,
+        top: Math.round(target.top / gridSize) * gridSize
+    });
+}
+
+function snapToRotation(target) {
+    var angle = target.angle;
+    var snappedAngle = Math.round(angle / rotationSnap) * rotationSnap;
+
+    // Adjust the angle
+    target.rotate(snappedAngle);
+}
+
+
+function snapToGridOnScaling(target) {
+    var scaleX = target.scaleX;
+    var scaleY = target.scaleY;
+    var width = target.width * scaleX;
+    var height = target.height * scaleY;
+
+    // Adjust dimensions to the nearest grid size
+    width = Math.round(width / gridSize) * gridSize;
+    height = Math.round(height / gridSize) * gridSize;
+
+    // Adjust the scale factors based on the new dimensions
+    target.scaleX = width / target.width;
+    target.scaleY = height / target.height;
+
+    // Snap the position to the grid as well
+    target.set({
+        left: Math.round(target.left / gridSize) * gridSize,
+        top: Math.round(target.top / gridSize) * gridSize
+    });
+}
+
+// // Event handler for when an object is moving
+// canvas.on('object:moving', function(options) {
+//     if (options.target) {
+//         snapToGrid(options.target);
+//     }
+// });
+
+// // Event handler for when an object is scaling
+// canvas.on('object:scaling', function(options) {
+//     if (options.target) {
+//         snapToGridOnScaling(options.target);
+//     }
+// });
+
+// // Continue handling other events like object moving
+// canvas.on('object:moving', function(options) {
+//     if (options.target) {
+//         snapToGrid(options.target);
+//     }
+// });
+
+// canvas.on('object:rotating', function(options) {
+//     if (options.target) {
+//         snapToRotation(options.target);
+//         options.target.setCoords(); // Recalculate the object's coordinates
+//     }
+// });
 
