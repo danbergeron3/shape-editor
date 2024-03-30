@@ -3,7 +3,7 @@
     top: 50%; /* Position the item in the middle vertically */
     left: 5%; /* Position the item in the middle horizontally */
     transform: translate(-50%, -50%);
-    background-color: #111;
+    background-color: #B7C9E2;
     
     padding: 5px 5px;
     cursor: pointer;
@@ -15,13 +15,28 @@
     top: 50%; /* Position the item in the middle vertically */
     left: 95%; /* Position the item in the middle horizontally */
     transform: translate(-50%, -50%);
-    background-color: #111;
+    background-color: #B7C9E2;
     
     padding: 5px 5px;
     cursor: pointer;
-    z-index: 9999; /* Set a high z-index value */
+    z-index: 9990; /* Set a high z-index value */
 }
 
 .borderRad {
     border-radius: 10px;
 }
+
+.color-picker {
+    z-index: 9991;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 50% 50%; /* Three columns */
+    padding: 10px;
+  }
+  
+  .grid-item {
+    background-color: rgba(255, 255, 255, 0.8); /* Item background color */
+    text-align: center; /* Center the text inside items */
+  }

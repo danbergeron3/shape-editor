@@ -25,7 +25,7 @@
 
                 </a>
                 <ul class="dropdown-menu text-small shadow">
-                    <li><input id=colorPicker value="#3399FF80" data-jscolor="{}">
+                    <li><input id=colorPicker class="color-picker" value="#3399FF80" data-jscolor="{}">
                 </ul>
                 </div>
             <li>
@@ -63,20 +63,45 @@
                     <path d="M14 14H21V21H14V14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
             </a>
-            <ul class="dropdown-menu text-small shadow">
-                <li><h2>Shapes</h2></li>
-                <li><button onclick='createRect(canvas)'>Rectangle</button></li>
-                <li><button onclick='createCirc(canvas)'><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <div class="grid-container dropdown-menu text-small shadow">
+                <div class="grid-item">           
+                    <li><button onclick='createRect(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><path d="M 7.7148 49.5742 L 48.2852 49.5742 C 53.1836 49.5742 55.6446 47.1367 55.6446 42.3086 L 55.6446 13.6914 C 55.6446 8.8633 53.1836 6.4258 48.2852 6.4258 L 7.7148 6.4258 C 2.8398 6.4258 .3554 8.8398 .3554 13.6914 L .3554 42.3086 C .3554 47.1602 2.8398 49.5742 7.7148 49.5742 Z M 7.7851 45.8008 C 5.4413 45.8008 4.1288 44.5586 4.1288 42.1211 L 4.1288 13.8789 C 4.1288 11.4414 5.4413 10.1992 7.7851 10.1992 L 48.2147 10.1992 C 50.5350 10.1992 51.8708 11.4414 51.8708 13.8789 L 51.8708 42.1211 C 51.8708 44.5586 50.5350 45.8008 48.2147 45.8008 Z"/></svg></button></li>
+                    <li><button onclick='createCirc(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg></button></li>
+                    <li><button onclick='setLine(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3.293,20.707a1,1,0,0,1,0-1.414l16-16a1,1,0,1,1,1.414,1.414l-16,16A1,1,0,0,1,3.293,20.707Z"/></svg></button></li>
+                    <li><button onclick='createSquare(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg></button></li>
+                </div>
+                <div class="grid-item">  
+                <li><button onclick='createPoly(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.1192 4.09438C10.7952 3.60324 11.1332 3.35767 11.5027 3.26278C11.829 3.17901 12.1712 3.17901 12.4975 3.26278C12.867 3.35767 13.205 3.60324 13.881 4.09438L19.6298 8.27108C20.3058 8.76222 20.6437 9.0078 20.8482 9.32992C21.0287 9.61436 21.1344 9.93978 21.1556 10.276C21.1795 10.6568 21.0504 11.0541 20.7922 11.8488L18.5964 18.6068C18.3382 19.4015 18.2091 19.7989 17.9659 20.0928C17.7512 20.3524 17.4743 20.5535 17.1611 20.6775C16.8064 20.818 16.3886 20.818 15.553 20.818H8.44718C7.6116 20.818 7.19381 20.818 6.83908 20.6775C6.52586 20.5535 6.24904 20.3524 6.0343 20.0928C5.79111 19.7989 5.66201 19.4015 5.4038 18.6068L3.20798 11.8488C2.94977 11.0541 2.82066 10.6568 2.84462 10.276C2.86577 9.93978 2.97151 9.61436 3.15202 9.32992C3.35645 9.0078 3.69445 8.76222 4.37045 8.27108L10.1192 4.09438Z" stroke="#000000" stroke-width="2" stroke-linejoin="round"/>
                     </svg></button></li>
-                <li><button onclick='setLine(canvas)'>Line</button></li>
-                <li><button onclick='createSquare(canvas)'>Square</button></li>
-                <li><button onclick='createPoly(canvas)'>Polygon</button></li>
-                <li><button onclick='setTriangle(canvas)'>Trianlge</button></li>
-                <li><button onclick='setEllipse(canvas)'>Ellipse</button></li>
-                <li><button onclick='createCurve(canvas)'>Curve</button></li>
-                <li><button onclick='createPolyLine(canvas)'>Poly Line</button></li>
-            </ul>
+                <li><button onclick='setTriangle(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0001 5.94363L4.76627 18H19.2339L12.0001 5.94363ZM10.7138 4.20006C11.2964 3.22905 12.7037 3.22905 13.2863 4.20006L21.4032 17.7282C22.0031 18.728 21.2829 20 20.117 20H3.88318C2.71724 20 1.99706 18.728 2.59694 17.7282L10.7138 4.20006Z" fill="#000000"/>
+                    </svg></button></li>
+                <li><button onclick='setEllipse(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21c-6.617 0-12-4.037-12-9s5.383-9 12-9 12 4.037 12 9-5.383 9-12 9zm0-17C5.935 4 1 7.589 1 12s4.935 8 11 8 11-3.589 11-8-4.935-8-11-8z"/></svg></button></li>
+                <li><button onclick='createCurve(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                    viewBox="0 0 512 512" xml:space="preserve">
+               <g>
+                   <g>
+                       <path d="M503.467,0h-51.2c-4.71,0-8.533,3.823-8.533,8.533v18.338C349.124,41.839,262.69,82.569,193.109,145.067h-48.043
+                           c-4.71,0-8.533,3.823-8.533,8.533v48.606C78.848,270.131,41.054,353.425,26.854,443.733H8.533c-4.71,0-8.533,3.823-8.533,8.533
+                           v51.2C0,508.177,3.823,512,8.533,512h51.2c4.71,0,8.533-3.823,8.533-8.533v-51.2c0-4.71-3.823-8.533-8.533-8.533h-15.59
+                           c14.02-86.144,50.278-165.547,105.327-230.4h46.797c4.71,0,8.533-3.823,8.533-8.533v-47.283
+                           C271.215,97.954,353.562,58.931,443.733,44.16v15.573c0,4.71,3.823,8.533,8.533,8.533h51.2c4.71,0,8.533-3.823,8.533-8.533v-51.2
+                           C512,3.823,508.177,0,503.467,0z M51.2,460.8v34.133H17.067V460.8H51.2z M187.733,196.267H153.6v-34.133h34.133V196.267z
+                            M494.933,51.2H460.8V17.067h34.133V51.2z"/>
+                   </g>
+               </g>
+               </svg></button></li>
+                <li><button onclick='createPolyLine(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="-3 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <title>line-chart</title>
+                    <path d="M23.36 9.32c-1.32 0-2.36 1.080-2.36 2.36 0 0.28 0.040 0.56 0.12 0.8l-4.8 4.080c-0.32-0.2-0.72-0.28-1.16-0.28s-0.88 0.12-1.24 0.36l-2.72-2.2c0.080-0.24 0.12-0.44 0.12-0.72 0-1.32-1.080-2.36-2.36-2.36-1.32 0-2.36 1.080-2.36 2.36 0 0.36 0.080 0.68 0.2 0.96l-3.44 3.44c-0.28-0.12-0.64-0.2-0.96-0.2-1.32 0-2.36 1.080-2.36 2.36 0 1.32 1.080 2.36 2.36 2.36s2.36-1.080 2.36-2.36c0-0.36-0.080-0.68-0.2-0.96l3.44-3.44c0.28 0.12 0.64 0.2 0.96 0.2 0.44 0 0.88-0.12 1.24-0.36l2.76 2.12c-0.080 0.24-0.080 0.44-0.080 0.72 0 1.32 1.080 2.36 2.36 2.36s2.36-1.080 2.36-2.36c0-0.28-0.040-0.56-0.12-0.8l4.8-4.080c0.32 0.2 0.72 0.28 1.16 0.28 1.32 0 2.36-1.080 2.36-2.36-0.040-1.2-1.16-2.28-2.44-2.28zM2.36 21c-0.36 0-0.68-0.32-0.68-0.68 0-0.4 0.32-0.68 0.68-0.68s0.68 0.32 0.68 0.68c0 0.36-0.28 0.68-0.68 0.68zM8.24 13.76c0-0.4 0.32-0.68 0.68-0.68s0.68 0.32 0.68 0.68-0.32 0.68-0.68 0.68c-0.36 0-0.68-0.32-0.68-0.68zM15.2 19.28c-0.4 0-0.68-0.32-0.68-0.68s0.32-0.68 0.68-0.68 0.68 0.32 0.68 0.68c-0.040 0.4-0.28 0.68-0.68 0.68zM23.36 12.36c-0.36 0-0.68-0.32-0.68-0.68 0-0.4 0.32-0.68 0.68-0.68 0.4 0 0.68 0.32 0.68 0.68 0 0.4-0.32 0.68-0.68 0.68z"></path>
+                    </svg></button></li>
+                </div>
+                </div>
             </div>
         </div>
     </div>

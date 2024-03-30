@@ -155,7 +155,8 @@ function drawGrid(gridSize) {
             stroke: '#3B3B3B',
             selectable: false,
             evented: false,
-            gridLine: true
+            gridLine: true,
+            strokeWidth: .2
         }));
     }
 
@@ -165,7 +166,8 @@ function drawGrid(gridSize) {
             stroke: '#3B3B3B',
             selectable: false,
             evented: false,
-            gridLine: true
+            gridLine: true,
+            strokeWidth: .2
         }));
     }
 
@@ -643,6 +645,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 function downloadJson() {
+    toggleGrid();
     const json =  JSON.stringify(canvas.toJSON());
     const filename = 'canvas-diagram.json';
 
@@ -656,6 +659,7 @@ function downloadJson() {
     element.click();
 
     document.body.removeChild(element);
+    toggleGrid();
 }
 
 
@@ -675,6 +679,8 @@ function loadCanvasFromJson(json) {
         canvas.renderAll();
 
     });
+    isGridVisible = false;
+    toggleGrid();
 }
 
 
