@@ -11,6 +11,11 @@
     <button onclick='toggleMode(editorModes.pan)'>Toggle Pan</button>
     <button onclick='toggleMode(editorModes.sketch)'>Toggle Sketch</button>
     <button onclick='toggleMode(editorModes.shape)'>Toggle Draw</button>
+    <button id="grid">Toggle Grid</button>
+    
+    <button id="saveButton">Save Diagram</button>
+    <input type="file" id="fileInput" accept=".json" />
+    <button id="saveAsImageButton">Save as JPEG</button>
     <input id=colorPicker value="#3399FF80" data-jscolor="{}">
     <button onclick='clearCanvas(canvas)'>Clear</button>
     <canvas id="canvas"></canvas>

@@ -5,6 +5,15 @@ let selectedShape;
                                  
 let mousePressed = false; 
 
+
+
+/// for undo & redo 
+let history = [];
+let index = -1;
+
+
+
+
 let startPoints = {
     x: 1,
     y: 1,
@@ -26,6 +35,8 @@ const shape = {
     poly_line: 'poly_line',
     polygon: 'polygon',
 };
+
+
 
 const initCanvas = (id) => {
     return new fabric.Canvas('canvas', {
@@ -64,6 +75,8 @@ const createRect = (canvas) => {
 
 const createCirc = (canvas) => {
     console.log("circ");
+    currentMode = 'shape';
+    currentShapetype = 'circle';
     // const canvCenter = canvas.getCenter();
     // const circ = new fabric.Circle({
     //     radius: 100,
@@ -76,8 +89,7 @@ const createCirc = (canvas) => {
     // });
     // canvas.add(circ);
     // canvas.renderAll();
-    currentMode = 'shape';
-    currentShapetype = 'circle';
+    
 }
 
 const setLine = (canvas) => {
@@ -168,13 +180,84 @@ const createSquare = (canvas) => {
 
 
 const canvas = initCanvas('canvas');
-fabric.Image.fromURL('https://wallpapers.com/images/high/red-raspberries-and-daisy-flower-roldn198zsn76ez3.jpg', (img) => {
-    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-        // Options to control the background image
-        scaleX: canvas.width / img.width,
-        scaleY: canvas.height / img.height
+// fabric.Image.fromURL('https://wallpapers.com/images/high/red-raspberries-and-daisy-flower-roldn198zsn76ez3.jpg', (img) => {
+//     canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+//         // Options to control the background image
+//         scaleX: canvas.width / img.width,
+//         scaleY: canvas.height / img.height
+//     });
+// });
+// function drawGrid(gridSize) {
+//     const gridLength = gridSize || 50; // Default grid size is 50px
+//     const width = canvas.width;
+//     const height = canvas.height;
+
+//     for (var i = 0; i < (width / gridLength); i++) {
+//         canvas.add(new fabric.Line([i * gridLength, 0, i * gridLength, height], {
+//             stroke: '#ccc',
+//             selectable: false
+//         }));
+//     }
+
+//     for (var j = 0; j < (height / gridLength); j++) {
+//         canvas.add(new fabric.Line([0, j * gridLength, width, j * gridLength], {
+//             stroke: '#ccc',
+//             selectable: false
+//         }));
+//     }
+// }
+
+function drawGrid(gridSize) {
+    const gridLength = gridSize || 50;
+    
+    // Clear existing grid lines
+    canvas.getObjects('line').forEach(function(line) {
+        if (line.gridLine) canvas.remove(line);
     });
-});
+
+    const vpt = canvas.viewportTransform;
+    const zoom = canvas.getZoom();
+    const width = canvas.width / zoom;
+    const height = canvas.height / zoom;
+    const vptX = vpt[4] / zoom;
+    const vptY = vpt[5] / zoom;
+
+    for (var i = -Math.ceil(vptX / gridLength); i < (width / gridLength) - vptX / gridLength; i++) {
+        canvas.add(new fabric.Line([i * gridLength, -height, i * gridLength, height], {
+            stroke: '#ccc',
+            selectable: false,
+            gridLine: true // Custom property to indicate it's a grid line
+        }));
+    }
+
+    for (var j = -Math.ceil(vptY / gridLength); j < (height / gridLength) - vptY / gridLength; j++) {
+        canvas.add(new fabric.Line([-width, j * gridLength, width, j * gridLength], {
+            stroke: '#ccc',
+            selectable: false,
+            gridLine: true
+        }));
+    }
+}
+
+
+let isGridVisible = false;
+
+function toggleGrid() {
+    // Remove existing grid lines
+    console.log('is gird visible: ' + isGridVisible);
+    canvas.getObjects('line').forEach(function(line) {
+        canvas.remove(line);
+    });
+
+    // Draw grid if it's currently not visible
+    if (!isGridVisible) {
+        drawGrid();
+        isGridVisible = true;
+    } else {
+        isGridVisible = false;
+    }
+    canvas.renderAll();
+}
 
 const toggleMode = (mode) => {
     if(mode === editorModes.pan) {
@@ -292,6 +375,7 @@ const setPanEvents = (canvas) => {
                 canvas.renderAll();
             }
         }
+        
     });
 
     canvas.on('mouse:down', (event) => {
@@ -397,10 +481,13 @@ const setPanEvents = (canvas) => {
 
     canvas.on('mouse:up', (event) => {
         mousePressed = false;
-        if(currentMode === 'pan') {
+        if(currentMode === editorModes.pan) {
             
             canvas.setCursor('default');
+            drawGrid();
             canvas.renderAll();
+        } else if (currentMode === editorModes.shape) {
+            currentMode = '';
         }
     });
 };
@@ -413,7 +500,88 @@ document.getElementById('colorPicker').addEventListener('change', (event) => {
     canvas.renderAll();
 });
 
-    
+
+
+let isUndoingRedoing = false;
+
+function undo() {
+    if (index <= 0) return;
+    isUndoingRedoing = true;
+    index--;
+    var state = history[index];
+    canvas.loadFromJSON(state, function() {
+        canvas.renderAll();
+        isUndoingRedoing = false;
+    });
+}
+
+function redo() {
+    if (index >= history.length - 2) return;
+    isUndoingRedoing = true;
+    index++;
+    var state = history[index];
+    canvas.loadFromJSON(state, function() {
+        canvas.renderAll();
+        isUndoingRedoing = false;
+    });
+}
+
+function updateHistory() {
+    if (isUndoingRedoing) return;
+    history.push(canvas.toJSON(['selectable', 'evented'])); // Include necessary properties
+    index = history.length - 1;
+}
+
+let clipboard = null;
+
+function copy() {
+    const activeObject = canvas.getActiveObject();
+
+    if (activeObject) {
+        // Clone the active object or group
+        activeObject.clone(function(cloned) {
+            clipboard = cloned;
+        });
+    }
+}
+
+function paste() {
+    if (!clipboard) {
+        return;
+    }
+
+    // Clone again the clipboard object
+    clipboard.clone(function(clonedObj) {
+        canvas.discardActiveObject();
+        clonedObj.set({
+            left: clonedObj.left + 10,
+            top: clonedObj.top + 10,
+            evented: true,
+        });
+
+        if (clonedObj.type === 'activeSelection') {
+            clonedObj.canvas = canvas;
+            clonedObj.forEachObject(function(obj) {
+                canvas.add(obj);
+            });
+            clonedObj.setCoords();
+        } else {
+            canvas.add(clonedObj);
+        }
+
+        clipboard.top += 10;
+        clipboard.left += 10;
+
+        canvas.setActiveObject(clonedObj);
+        canvas.requestRenderAll();
+    });
+}
+
+
+canvas.on('object:added', updateHistory);
+canvas.on('object:modified', updateHistory);
+canvas.on('object:removed', updateHistory);
+
 console.log("Canvas initialized:", canvas);
 
 // Now, canvas.renderAll() is not strictly necessary since the 
@@ -421,6 +589,87 @@ console.log("Canvas initialized:", canvas);
 // mouse over 
 // panning 
 setPanEvents(canvas);
-    
+drawGrid();
+ 
+
+// Key event listener for Ctrl+Z and Ctrl+Y (for redo)
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey || event.metaKey) {
+        switch (event.key) {
+            case 'z':
+                undo();
+                break;
+            case 'y':
+                redo();
+                break;
+        }
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey || e.metaKey) { // MetaKey is for macOS
+        switch (e.key) {
+            case 'c':
+                copy();
+                break;
+            case 'v':
+                paste();
+                break;
+        }
+    }
+});
+
+function downloadJson() {
+    const json =  JSON.stringify(canvas.toJSON());
+    const filename = 'canvas-diagram.json';
+
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(json));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+
+function readFile(file) {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const contents = e.target.result;
+        loadCanvasFromJson(contents);
+    };
+
+    reader.readAsText(file);
+}
+
+function loadCanvasFromJson(json) {
+    canvas.loadFromJSON(json, function() {
+        canvas.renderAll();
+
+    });
+}
+
+
+document.getElementById('fileInput').addEventListener('change', function(e) {
+    if (e.target.files.length === 0) {
+        return; // No file selected
+    }
+
+    const file = e.target.files[0];
+    if (file.type && file.type.indexOf('json') === -1) {
+        return;
+    }
+
+    readFile(file);
+});
+
+document.getElementById('saveButton').addEventListener('click', downloadJson);
+document.getElementById('grid').addEventListener('click', toggleGrid);
+
 
 
