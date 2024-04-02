@@ -36,7 +36,13 @@
     padding: 10px;
   }
   
-  .grid-item {
-    background-color: rgba(255, 255, 255, 0.8); /* Item background color */
-    text-align: center; /* Center the text inside items */
-  }
+.grid-item {
+background-color: rgba(255, 255, 255, 0.8); /* Item background color */
+text-align: center; /* Center the text inside items */
+}
+
+.input-padding {
+    
+    padding-left: 5px;
+    padding-right: 5px;
+}

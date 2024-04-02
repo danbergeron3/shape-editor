@@ -2,10 +2,12 @@ let currentMode;
 let currentColor = '#000000'; 
 let currentShapetype;
 let selectedShape;
-                                 
+
+let lineStrokeWidth = 1;
+
 let mousePressed = false; 
 
-
+let tempLine = null;
 /// for undo & redo 
 let history = [];
 let index = -1;
@@ -36,7 +38,9 @@ const shape = {
     polygon: 'polygon',
 };
 
-
+// water pipe
+var waterPipePoints = [];
+var waterPipeLines = [];
 
 const initCanvas = (id) => {
 
@@ -179,16 +183,36 @@ function drawGrid(gridSize) {
     canvas.renderAll();
 }
 
+function downloadCanvas() {
+    // Get the data URL for the canvas content
+    var dataURL = canvas.toDataURL('image/jpg');
 
+    // Create a temporary anchor element
+    var downloadLink = document.createElement('a');
+    downloadLink.href = dataURL;
+    downloadLink.download = 'canvas-image.jpg'; // Set the download filename
 
+    // Append the anchor to the body, click it, and then remove it
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
 
+let thicknessInput = document.getElementById('thickness');
 
+// Add an event listener to the input
+thicknessInput.addEventListener('input', function() {
+    lineStrokeWidth = parseInt(thicknessInput.value, 10) || 1;
+    
+});
 
 function toggleGrid() {
     // Remove existing grid lines
     console.log('is gird visible: ' + isGridVisible);
     canvas.getObjects('line').forEach(function(line) {
-        canvas.remove(line);
+        if (line.gridLine) {
+            canvas.remove(line);
+        }
     });
 
     // Draw grid if it's currently not visible
@@ -362,12 +386,15 @@ const setPanEvents = (canvas) => {
             canvas.renderAll();
         } else if (currentMode === editorModes.shape) {
             // for line
+            canvas.isDrawingMode = false;
             if(currentShapetype === shape.line) {
                 
                 let pointer = canvas.getPointer(event.e);
                 selectedShape = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y],{
                     fill:  currentColor,
-                    stroke: currentColor,});
+                    stroke: currentColor,
+                    strokeWidth: lineStrokeWidth,
+                });
                     
                 canvas.add(selectedShape);
                 canvas.renderAll();
@@ -472,6 +499,102 @@ const setPanEvents = (canvas) => {
     
                 // Draw the curve
                 drawCurve(canvas, startPoint, controlPoint, endPoint);
+            } else if (currentShapetype === shape.poly_line) {
+                canvas.on("mouse:down", function(event) {
+                    var pointer = canvas.getPointer(event.e);
+                    var positionX = pointer.x;
+                    var positionY = pointer.y;
+                  
+                    // Add small circle as an indicative point
+                    var circlePoint = new fabric.Circle({
+                      radius: 0,
+                      fill: currentColor,
+                      left: positionX,
+                      top: positionY,
+                      selectable: true,
+                      originX: "center",
+                      originY: "center",
+                      hoverCursor: "auto"
+                    });
+                  
+                    canvas.add(circlePoint);
+                  
+                    // Store the points to draw the lines
+                    waterPipePoints.push(circlePoint);
+                    console.log(waterPipePoints);
+                    if (waterPipePoints.length > 1) {
+                      // Just draw a line using the last two points, so we don't need to clear
+                      // and re-render all the lines
+                      var startPoint = waterPipePoints[waterPipePoints.length - 2];
+                      var endPoint = waterPipePoints[waterPipePoints.length - 1];
+                  
+                      var waterLine = new fabric.Line(
+                        [
+                          startPoint.get("left"),
+                          startPoint.get("top"),
+                          endPoint.get("left"),
+                          endPoint.get("top")
+                        ],
+                        {
+                          stroke: "blue",
+                          strokeWidth: lineStrokeWidth,
+                          hasControls: false,
+                          hasBorders: false,
+                          selectable: true,
+                          lockMovementX: true,
+                          lockMovementY: true,
+                          hoverCursor: "default",
+                          originX: "center",
+                          originY: "center"
+                        }
+                      );
+                  
+                      waterPipeLines.push(waterLine);
+                  
+                      canvas.add(waterLine);
+                      // Create a new tempLine starting from the last point
+                        if (tempLine) {
+                            canvas.remove(tempLine);
+                        }
+                        tempLine = new fabric.Line(
+                            [endPoint.get("left"), endPoint.get("top"), endPoint.get("left"), endPoint.get("top")],
+                            {
+                                stroke: "blue",
+                                strokeWidth: lineStrokeWidth,
+                                selectable: false,
+                                evented: false
+                            }
+                        );
+                        canvas.add(tempLine);
+                    }
+                  });
+
+                  canvas.on('mouse:move', (event) => {
+                
+
+                        var pointer = canvas.getPointer(event.e);
+                        if (tempLine) {
+                            // Update the end point of the temporary line
+                            tempLine.set({ x2: pointer.x, y2: pointer.y });
+                        } else {
+                            // Create a new temporary line
+                            var lastPoint = waterPipePoints[waterPipePoints.length - 1];
+                            tempLine = new fabric.Line(
+                                [lastPoint.get("left"), lastPoint.get("top"), pointer.x, pointer.y],
+                                {
+                                    stroke: "blue",
+                                    strokeWidth: 4,
+                                    selectable: false,
+                                    evented: false
+                                }
+                            );
+                            canvas.add(tempLine);
+                        }
+                        canvas.renderAll();
+                    
+                });
+                  
+                  canvas.renderAll();
             }
         } else if (currentMode === editorModes.snapToGrid) {
             // Event handler for when an object is moving
@@ -602,10 +725,15 @@ function paste() {
     });
 }
 
+canvas.wrapperEl.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+});
+
 
 canvas.on('object:added', updateHistory);
 canvas.on('object:modified', updateHistory);
 canvas.on('object:removed', updateHistory);
+
 
 console.log("Canvas initialized:", canvas);
 
@@ -699,6 +827,7 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
 
 document.getElementById('saveButton').addEventListener('click', downloadJson);
 document.getElementById('grid').addEventListener('click', toggleGrid);
+document.getElementById('saveAsImageButton').addEventListener('click', downloadCanvas);
 
 // Assuming a grid size of 25 as used in your drawGrid function
 const gridSize = 25;
@@ -776,3 +905,73 @@ window.addEventListener('resize', function() {
 //     }
 // });
 
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'f') {
+        event.preventDefault(); // Prevent the default browser find action
+        endPolyLineDrawing(); // Call the function to stop drawing
+    }
+});
+
+function endPolyLineDrawing() {
+    if (tempLine) {
+        canvas.remove(tempLine);
+        tempLine = null;
+    }
+    waterPipePoints = [];
+    isDrawingPolyLine = false;
+    canvas.off('mouse:down');
+    canvas.off('mouse:move');
+}
+
+const MAX_ZOOM = 5;
+const MIN_ZOOM = .5;
+
+canvas.wrapperEl.addEventListener('wheel', function(event) {
+    var delta = event.deltaY;
+    var currentZoom = canvas.getZoom();
+    var newZoom = currentZoom * (1 - delta / 1000);
+
+    // Limit the zoom level
+    if (newZoom > MAX_ZOOM) {
+        newZoom = MAX_ZOOM;
+    } else if (newZoom < MIN_ZOOM) {
+        newZoom = MIN_ZOOM;
+    }
+
+    canvas.setZoom(newZoom);
+    event.preventDefault();
+    event.stopPropagation();
+
+    canvas.renderAll();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('saveButton').addEventListener('click', function() {
+        // Call the function to save the canvas
+        // For example, let's call saveCanvasAsPDF function
+        saveCanvasAsPDF('canvas', 'savedCanvas.pdf');
+    });
+});
+
+
+async function saveCanvasAsPDF(canvasId, pdfFilename) {
+    // Convert the canvas to an image
+    const canvasEl = document.getElementById(canvasId);
+    console.log(canvasEl);
+    if (canvasEl) {
+        html2canvas(canvasEl).then(canvasImage => {
+            const pdf = new jsPDF.jsPDF({
+                orientation: 'landscape',
+                unit: 'px',
+                format: [canvasEl.width, canvasEl.height]
+            });
+
+            //pdf.addImage(canvasImage.toDataURL('image/png'), 'PNG', 0, 0, canvasEl.width, canvasEl.height);
+            pdf.save(pdfFilename);
+        }).catch(error => {
+            console.error("Error in html2canvas:", error);
+        });
+    } else {
+        console.error("Canvas element not found.");
+    }
+}
