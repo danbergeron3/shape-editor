@@ -945,28 +945,33 @@ canvas.wrapperEl.addEventListener('wheel', function(event) {
     canvas.renderAll();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('saveButton').addEventListener('click', function() {
-        // Call the function to save the canvas
-        // For example, let's call saveCanvasAsPDF function
-        saveCanvasAsPDF('canvas', 'savedCanvas.pdf');
-    });
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.getElementById('saveButton').addEventListener('click', function() {
+//         // Call the function to save the canvas
+//         // For example, let's call saveCanvasAsPDF function
+//         saveCanvasAsPDF('canvas', 'savedCanvas.pdf');
+//     });
+// });
 
+
+document.getElementById('saveAsPDF').addEventListener('click', (canvas) => {
+    saveCanvasAsPDF('canvas', 'savedCanvas.pdf');
+})
 
 async function saveCanvasAsPDF(canvasId, pdfFilename) {
     // Convert the canvas to an image
     const canvasEl = document.getElementById(canvasId);
-    console.log(canvasEl);
+    const { jsPDF } = window.jspdf;
+
     if (canvasEl) {
         html2canvas(canvasEl).then(canvasImage => {
-            const pdf = new jsPDF.jsPDF({
+            const pdf = new jsPDF({
                 orientation: 'landscape',
                 unit: 'px',
                 format: [canvasEl.width, canvasEl.height]
             });
 
-            //pdf.addImage(canvasImage.toDataURL('image/png'), 'PNG', 0, 0, canvasEl.width, canvasEl.height);
+            pdf.addImage(canvasImage.toDataURL('image/png'), 'PNG', 0, 0, canvasEl.width, canvasEl.height);
             pdf.save(pdfFilename);
         }).catch(error => {
             console.error("Error in html2canvas:", error);
@@ -975,3 +980,59 @@ async function saveCanvasAsPDF(canvasId, pdfFilename) {
         console.error("Canvas element not found.");
     }
 }
+
+function groupSelectedItems(canvas) {
+    const selectedObjects = canvas.getActiveObjects();
+
+    if (selectedObjects.length === 0) {
+        console.log("No objects selected for grouping");
+        return;
+    }
+
+    // Create a group with the selected objects
+    let newGroup = new fabric.Group(selectedObjects, {
+        canvas: canvas
+    });
+
+    // Add the group to the canvas
+    canvas.add(newGroup);
+
+    // Remove the individual objects that are now in the group
+    selectedObjects.forEach(obj => {
+        canvas.remove(obj);
+    });
+
+    // Render the canvas
+    canvas.renderAll();
+}
+
+function duplicateSelectedObject() {
+    var activeObject = canvas.getActiveObject();
+
+    if (!activeObject) {
+        console.log("No object selected for duplication");
+        return;
+    }
+
+    // Clone the active object
+    activeObject.clone(function(cloned) {
+        cloned.set({
+            left: cloned.left + 10,
+            top: cloned.top + 10
+        });
+
+        canvas.add(cloned);
+        canvas.setActiveObject(cloned);
+        canvas.requestRenderAll();
+    });
+}
+
+
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'd') {
+        event.preventDefault(); 
+        duplicateSelectedObject();
+    }
+});
+
+

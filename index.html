@@ -50,11 +50,62 @@
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;">
             <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
             <li class="nav-item">
-                <button onclick='toggleMode(editorModes.pan)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <button title="pan" onclick='toggleMode(editorModes.pan)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 3V9M12 3L9 6M12 3L15 6M12 15V21M12 21L15 18M12 21L9 18M3 12H9M3 12L6 15M3 12L6 9M15 12H21M21 12L18 9M21 12L18 15" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg></button>
                 
             </li>
+            <div title="Shapes" class="dropdown border-top">
+                <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 10L12 3L16 10H8Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 17.5C10 19.433 8.433 21 6.5 21C4.567 21 3 19.433 3 17.5C3 15.567 4.567 14 6.5 14C8.433 14 10 15.567 10 17.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 14H21V21H14V14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                </a>
+                <div class="grid-container dropdown-menu text-small shadow">
+                    <div class="grid-item">           
+                        <li><button title="Rectangle" onclick='createRect(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><path d="M 7.7148 49.5742 L 48.2852 49.5742 C 53.1836 49.5742 55.6446 47.1367 55.6446 42.3086 L 55.6446 13.6914 C 55.6446 8.8633 53.1836 6.4258 48.2852 6.4258 L 7.7148 6.4258 C 2.8398 6.4258 .3554 8.8398 .3554 13.6914 L .3554 42.3086 C .3554 47.1602 2.8398 49.5742 7.7148 49.5742 Z M 7.7851 45.8008 C 5.4413 45.8008 4.1288 44.5586 4.1288 42.1211 L 4.1288 13.8789 C 4.1288 11.4414 5.4413 10.1992 7.7851 10.1992 L 48.2147 10.1992 C 50.5350 10.1992 51.8708 11.4414 51.8708 13.8789 L 51.8708 42.1211 C 51.8708 44.5586 50.5350 45.8008 48.2147 45.8008 Z"/></svg></button></li>
+                        <li><button title="Circle" onclick='createCirc(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg></button></li>
+                        <li><button title="Line" onclick='setLine(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3.293,20.707a1,1,0,0,1,0-1.414l16-16a1,1,0,1,1,1.414,1.414l-16,16A1,1,0,0,1,3.293,20.707Z"/></svg></button></li>
+                        <li><button title="Square" onclick='createSquare(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg></button></li>
+                    </div>
+                        <div class="grid-item">  
+                            <li><button title="Polygon" onclick='createPoly(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.1192 4.09438C10.7952 3.60324 11.1332 3.35767 11.5027 3.26278C11.829 3.17901 12.1712 3.17901 12.4975 3.26278C12.867 3.35767 13.205 3.60324 13.881 4.09438L19.6298 8.27108C20.3058 8.76222 20.6437 9.0078 20.8482 9.32992C21.0287 9.61436 21.1344 9.93978 21.1556 10.276C21.1795 10.6568 21.0504 11.0541 20.7922 11.8488L18.5964 18.6068C18.3382 19.4015 18.2091 19.7989 17.9659 20.0928C17.7512 20.3524 17.4743 20.5535 17.1611 20.6775C16.8064 20.818 16.3886 20.818 15.553 20.818H8.44718C7.6116 20.818 7.19381 20.818 6.83908 20.6775C6.52586 20.5535 6.24904 20.3524 6.0343 20.0928C5.79111 19.7989 5.66201 19.4015 5.4038 18.6068L3.20798 11.8488C2.94977 11.0541 2.82066 10.6568 2.84462 10.276C2.86577 9.93978 2.97151 9.61436 3.15202 9.32992C3.35645 9.0078 3.69445 8.76222 4.37045 8.27108L10.1192 4.09438Z" stroke="#000000" stroke-width="2" stroke-linejoin="round"/>
+                                </svg></button></li>
+                            <li><button title="Trianlge" onclick='setTriangle(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0001 5.94363L4.76627 18H19.2339L12.0001 5.94363ZM10.7138 4.20006C11.2964 3.22905 12.7037 3.22905 13.2863 4.20006L21.4032 17.7282C22.0031 18.728 21.2829 20 20.117 20H3.88318C2.71724 20 1.99706 18.728 2.59694 17.7282L10.7138 4.20006Z" fill="#000000"/>
+                                </svg></button></li>
+                            <li><button title="Ellipse" onclick='setEllipse(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21c-6.617 0-12-4.037-12-9s5.383-9 12-9 12 4.037 12 9-5.383 9-12 9zm0-17C5.935 4 1 7.589 1 12s4.935 8 11 8 11-3.589 11-8-4.935-8-11-8z"/></svg></button></li>
+                            <li><button title="Curve" onclick='createCurve(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path d="M503.467,0h-51.2c-4.71,0-8.533,3.823-8.533,8.533v18.338C349.124,41.839,262.69,82.569,193.109,145.067h-48.043
+                                    c-4.71,0-8.533,3.823-8.533,8.533v48.606C78.848,270.131,41.054,353.425,26.854,443.733H8.533c-4.71,0-8.533,3.823-8.533,8.533
+                                    v51.2C0,508.177,3.823,512,8.533,512h51.2c4.71,0,8.533-3.823,8.533-8.533v-51.2c0-4.71-3.823-8.533-8.533-8.533h-15.59
+                                    c14.02-86.144,50.278-165.547,105.327-230.4h46.797c4.71,0,8.533-3.823,8.533-8.533v-47.283
+                                    C271.215,97.954,353.562,58.931,443.733,44.16v15.573c0,4.71,3.823,8.533,8.533,8.533h51.2c4.71,0,8.533-3.823,8.533-8.533v-51.2
+                                    C512,3.823,508.177,0,503.467,0z M51.2,460.8v34.133H17.067V460.8H51.2z M187.733,196.267H153.6v-34.133h34.133V196.267z
+                                        M494.933,51.2H460.8V17.067h34.133V51.2z"/>
+                            </g>
+                        </g>
+                        </svg></button></li>
+                            <li><button onclick='createPolyLine(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="-3 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <title>Poly Line</title>
+                                <path d="M23.36 9.32c-1.32 0-2.36 1.080-2.36 2.36 0 0.28 0.040 0.56 0.12 0.8l-4.8 4.080c-0.32-0.2-0.72-0.28-1.16-0.28s-0.88 0.12-1.24 0.36l-2.72-2.2c0.080-0.24 0.12-0.44 0.12-0.72 0-1.32-1.080-2.36-2.36-2.36-1.32 0-2.36 1.080-2.36 2.36 0 0.36 0.080 0.68 0.2 0.96l-3.44 3.44c-0.28-0.12-0.64-0.2-0.96-0.2-1.32 0-2.36 1.080-2.36 2.36 0 1.32 1.080 2.36 2.36 2.36s2.36-1.080 2.36-2.36c0-0.36-0.080-0.68-0.2-0.96l3.44-3.44c0.28 0.12 0.64 0.2 0.96 0.2 0.44 0 0.88-0.12 1.24-0.36l2.76 2.12c-0.080 0.24-0.080 0.44-0.080 0.72 0 1.32 1.080 2.36 2.36 2.36s2.36-1.080 2.36-2.36c0-0.28-0.040-0.56-0.12-0.8l4.8-4.080c0.32 0.2 0.72 0.28 1.16 0.28 1.32 0 2.36-1.080 2.36-2.36-0.040-1.2-1.16-2.28-2.44-2.28zM2.36 21c-0.36 0-0.68-0.32-0.68-0.68 0-0.4 0.32-0.68 0.68-0.68s0.68 0.32 0.68 0.68c0 0.36-0.28 0.68-0.68 0.68zM8.24 13.76c0-0.4 0.32-0.68 0.68-0.68s0.68 0.32 0.68 0.68-0.32 0.68-0.68 0.68c-0.36 0-0.68-0.32-0.68-0.68zM15.2 19.28c-0.4 0-0.68-0.32-0.68-0.68s0.32-0.68 0.68-0.68 0.68 0.32 0.68 0.68c-0.040 0.4-0.28 0.68-0.68 0.68zM23.36 12.36c-0.36 0-0.68-0.32-0.68-0.68 0-0.4 0.32-0.68 0.68-0.68 0.4 0 0.68 0.32 0.68 0.68 0 0.4-0.32 0.68-0.68 0.68z"></path>
+                                </svg></button></li>
+                            <li>
+                                <span class="badge text-bg-light rounded-pill mb-2">Line thickness</span>
+                                <input type="number" id="thickness" class="input-padding"> </input>
+                            </li>
+                        </div>
+                    </div>
             <div class="dropdown border-top">
                 <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg width="25px" height="25px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 10.5c.002 2.762-2.237 5-5 5s-5.002-2.238-5-5c-.002-2.76 2.237-5 5-5s5.002 2.24 5 5z" color="#000000" fill="#ff15a1" stroke="#373737" stroke-width=".49999682600000006"/><path d="M8 1.401a4.998 4.998 0 0 0-2.488 9.334c-.004-.078-.012-.155-.012-.234a4.998 4.998 0 0 1 7.488-4.334A4.994 4.994 0 0 0 8 1.4z" fill="#1583ff"/><path d="M10.5 5.5a4.998 4.998 0 0 0-5 5c0 .08.008.157.012.235A4.998 4.998 0 0 0 13 6.401c0-.079-.008-.156-.012-.234A4.975 4.975 0 0 0 10.5 5.5z" fill="#00cf2d"/><path d="M12.988 6.167c.004.078.012.155.012.234a4.998 4.998 0 0 1-7.489 4.334 4.994 4.994 0 0 0 4.989 4.766 4.998 4.998 0 0 0 2.488-9.334z" fill="#f8ff15"/><path d="M5.512 10.735a4.996 4.996 0 0 0 2.486 4.093 4.987 4.987 0 0 0 2.49-4.091A4.978 4.978 0 0 1 8 11.4a4.975 4.975 0 0 1-2.488-.666z" fill="#ef0000"/><path d="M7.998 6.173A4.991 4.991 0 0 0 5.5 10.5c0 .079.008.156.012.234a4.978 4.978 0 0 0 4.977.002c.003-.079.011-.157.011-.236a4.99 4.99 0 0 0-2.502-4.328z" fill="#383027"/><path d="M5.5 5.5c-.91 0-1.76.247-2.494.67a4.99 4.99 0 0 0 2.506 4.564c-.004-.077-.012-.154-.012-.233a4.991 4.991 0 0 1 2.498-4.328A4.975 4.975 0 0 0 5.5 5.5z" fill="#5100cc"/><path d="M8 1.401a4.998 4.998 0 0 0-4.994 4.77 4.998 4.998 0 1 0 4.992 8.658 4.998 4.998 0 1 0 4.99-8.662A4.994 4.994 0 0 0 8 1.4z" fill="none" stroke="#373737" stroke-width=".9999936520000001"/></svg>
@@ -65,84 +116,41 @@
                 </ul>
                 </div>
             <li>
-                <button onclick='toggleMode(editorModes.sketch)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                <button title="Sketch" onclick='toggleMode(editorModes.sketch)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg></button>
                 
             </li>
             <li>
-                <button id="grid" class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                <button title="Grid" id="grid" class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 9.33333V6C20 4.89543 19.1046 4 18 4H14.6667M20 9.33333H14.6667M20 9.33333V14.6667M4 9.33333V6C4 4.89543 4.89543 4 6 4H9.33333M4 9.33333H9.33333M4 9.33333V14.6667M14.6667 9.33333H9.33333M14.6667 9.33333V4M14.6667 9.33333V14.6667M9.33333 9.33333V4M9.33333 9.33333V14.6667M20 14.6667V18C20 19.1046 19.1046 20 18 20H14.6667M20 14.6667H14.6667M4 14.6667V18C4 19.1046 4.89543 20 6 20H9.33333M4 14.6667H9.33333M14.6667 14.6667H9.33333M14.6667 14.6667V20M9.33333 14.6667V20M9.33333 4H14.6667M9.33333 20H14.6667" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg></button>
                 
             </li>
             <li>
-                <button onclick='toggleMode(editorModes.snapToGrid)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                <button title="Snap-to-grid" onclick='toggleMode(editorModes.snapToGrid)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
                     <svg width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 4H6V1H5v3H1v1h4v4H1v1h4v4H1v1h4v4H1v1h4v3h1v-3h4v3h1V1h-1zM6 5h4v4H6zm0 5h4v4H6zm0 9v-4h4v4zM17.8 6H12v4h5.8a2 2 0 0 1 0 4H12v4h5.8a6 6 0 0 0 0-12zM13 7h2v2h-2zm0 8h2v2h-2zm4.8 2H16v-2h1.8a3 3 0 0 0 0-6H16V7h1.8a5 5 0 0 1 0 10z"/><path fill="none" d="M0 0h24v24H0z"/></svg></button>
                 </a>
             </li>
             <li>
-                <button onclick='clearCanvas(canvas)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                <button title="Clear Canvas" onclick='clearCanvas(canvas)' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
                     <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4.56189 13.5L4.14285 13.9294L4.5724 14.3486L4.99144 13.9189L4.56189 13.5ZM9.92427 15.9243L15.9243 9.92427L15.0757 9.07574L9.07574 15.0757L9.92427 15.9243ZM9.07574 9.92426L15.0757 15.9243L15.9243 15.0757L9.92426 9.07574L9.07574 9.92426ZM19.9 12.5C19.9 16.5869 16.5869 19.9 12.5 19.9V21.1C17.2496 21.1 21.1 17.2496 21.1 12.5H19.9ZM5.1 12.5C5.1 8.41309 8.41309 5.1 12.5 5.1V3.9C7.75035 3.9 3.9 7.75035 3.9 12.5H5.1ZM12.5 5.1C16.5869 5.1 19.9 8.41309 19.9 12.5H21.1C21.1 7.75035 17.2496 3.9 12.5 3.9V5.1ZM5.15728 13.4258C5.1195 13.1227 5.1 12.8138 5.1 12.5H3.9C3.9 12.8635 3.92259 13.2221 3.9665 13.5742L5.15728 13.4258ZM12.5 19.9C9.9571 19.9 7.71347 18.6179 6.38048 16.6621L5.38888 17.3379C6.93584 19.6076 9.54355 21.1 12.5 21.1V19.9ZM4.99144 13.9189L7.42955 11.4189L6.57045 10.5811L4.13235 13.0811L4.99144 13.9189ZM4.98094 13.0706L2.41905 10.5706L1.58095 11.4294L4.14285 13.9294L4.98094 13.0706Z" fill="#121923"/>
                         </svg>
                 </a>
             </li>
-            </ul>
-            <div class="dropdown border-top">
-            <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 10L12 3L16 10H8Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M10 17.5C10 19.433 8.433 21 6.5 21C4.567 21 3 19.433 3 17.5C3 15.567 4.567 14 6.5 14C8.433 14 10 15.567 10 17.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M14 14H21V21H14V14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <li>
+                <button title="Group Selected Items" onclick='groupSelectedItems(canvas);' class="nav-link py-3 border-bottom rounded-0 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <svg fill="#000000" width="25px" height="25px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M915.744 213v702.744H213v87.842h702.744v702.744h87.842v-702.744h702.744v-87.842h-702.744V213z" fill-rule="evenodd"/>
                     </svg>
-            </a>
-            <div class="grid-container dropdown-menu text-small shadow">
-                <div class="grid-item">           
-                    <li><button onclick='createRect(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><path d="M 7.7148 49.5742 L 48.2852 49.5742 C 53.1836 49.5742 55.6446 47.1367 55.6446 42.3086 L 55.6446 13.6914 C 55.6446 8.8633 53.1836 6.4258 48.2852 6.4258 L 7.7148 6.4258 C 2.8398 6.4258 .3554 8.8398 .3554 13.6914 L .3554 42.3086 C .3554 47.1602 2.8398 49.5742 7.7148 49.5742 Z M 7.7851 45.8008 C 5.4413 45.8008 4.1288 44.5586 4.1288 42.1211 L 4.1288 13.8789 C 4.1288 11.4414 5.4413 10.1992 7.7851 10.1992 L 48.2147 10.1992 C 50.5350 10.1992 51.8708 11.4414 51.8708 13.8789 L 51.8708 42.1211 C 51.8708 44.5586 50.5350 45.8008 48.2147 45.8008 Z"/></svg></button></li>
-                    <li><button onclick='createCirc(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg></button></li>
-                    <li><button onclick='setLine(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3.293,20.707a1,1,0,0,1,0-1.414l16-16a1,1,0,1,1,1.414,1.414l-16,16A1,1,0,0,1,3.293,20.707Z"/></svg></button></li>
-                    <li><button onclick='createSquare(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg></button></li>
-                </div>
-                    <div class="grid-item">  
-                        <li><button onclick='createPoly(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.1192 4.09438C10.7952 3.60324 11.1332 3.35767 11.5027 3.26278C11.829 3.17901 12.1712 3.17901 12.4975 3.26278C12.867 3.35767 13.205 3.60324 13.881 4.09438L19.6298 8.27108C20.3058 8.76222 20.6437 9.0078 20.8482 9.32992C21.0287 9.61436 21.1344 9.93978 21.1556 10.276C21.1795 10.6568 21.0504 11.0541 20.7922 11.8488L18.5964 18.6068C18.3382 19.4015 18.2091 19.7989 17.9659 20.0928C17.7512 20.3524 17.4743 20.5535 17.1611 20.6775C16.8064 20.818 16.3886 20.818 15.553 20.818H8.44718C7.6116 20.818 7.19381 20.818 6.83908 20.6775C6.52586 20.5535 6.24904 20.3524 6.0343 20.0928C5.79111 19.7989 5.66201 19.4015 5.4038 18.6068L3.20798 11.8488C2.94977 11.0541 2.82066 10.6568 2.84462 10.276C2.86577 9.93978 2.97151 9.61436 3.15202 9.32992C3.35645 9.0078 3.69445 8.76222 4.37045 8.27108L10.1192 4.09438Z" stroke="#000000" stroke-width="2" stroke-linejoin="round"/>
-                            </svg></button></li>
-                        <li><button onclick='setTriangle(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0001 5.94363L4.76627 18H19.2339L12.0001 5.94363ZM10.7138 4.20006C11.2964 3.22905 12.7037 3.22905 13.2863 4.20006L21.4032 17.7282C22.0031 18.728 21.2829 20 20.117 20H3.88318C2.71724 20 1.99706 18.728 2.59694 17.7282L10.7138 4.20006Z" fill="#000000"/>
-                            </svg></button></li>
-                        <li><button onclick='setEllipse(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21c-6.617 0-12-4.037-12-9s5.383-9 12-9 12 4.037 12 9-5.383 9-12 9zm0-17C5.935 4 1 7.589 1 12s4.935 8 11 8 11-3.589 11-8-4.935-8-11-8z"/></svg></button></li>
-                        <li><button onclick='createCurve(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                            viewBox="0 0 512 512" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path d="M503.467,0h-51.2c-4.71,0-8.533,3.823-8.533,8.533v18.338C349.124,41.839,262.69,82.569,193.109,145.067h-48.043
-                                c-4.71,0-8.533,3.823-8.533,8.533v48.606C78.848,270.131,41.054,353.425,26.854,443.733H8.533c-4.71,0-8.533,3.823-8.533,8.533
-                                v51.2C0,508.177,3.823,512,8.533,512h51.2c4.71,0,8.533-3.823,8.533-8.533v-51.2c0-4.71-3.823-8.533-8.533-8.533h-15.59
-                                c14.02-86.144,50.278-165.547,105.327-230.4h46.797c4.71,0,8.533-3.823,8.533-8.533v-47.283
-                                C271.215,97.954,353.562,58.931,443.733,44.16v15.573c0,4.71,3.823,8.533,8.533,8.533h51.2c4.71,0,8.533-3.823,8.533-8.533v-51.2
-                                C512,3.823,508.177,0,503.467,0z M51.2,460.8v34.133H17.067V460.8H51.2z M187.733,196.267H153.6v-34.133h34.133V196.267z
-                                    M494.933,51.2H460.8V17.067h34.133V51.2z"/>
-                        </g>
-                    </g>
-                    </svg></button></li>
-                        <li><button onclick='createPolyLine(canvas)' class="btn btn-light rounded-pill px-3" type="button"><svg fill="#000000" width="25px" height="25px" viewBox="-3 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                            <title>line-chart</title>
-                            <path d="M23.36 9.32c-1.32 0-2.36 1.080-2.36 2.36 0 0.28 0.040 0.56 0.12 0.8l-4.8 4.080c-0.32-0.2-0.72-0.28-1.16-0.28s-0.88 0.12-1.24 0.36l-2.72-2.2c0.080-0.24 0.12-0.44 0.12-0.72 0-1.32-1.080-2.36-2.36-2.36-1.32 0-2.36 1.080-2.36 2.36 0 0.36 0.080 0.68 0.2 0.96l-3.44 3.44c-0.28-0.12-0.64-0.2-0.96-0.2-1.32 0-2.36 1.080-2.36 2.36 0 1.32 1.080 2.36 2.36 2.36s2.36-1.080 2.36-2.36c0-0.36-0.080-0.68-0.2-0.96l3.44-3.44c0.28 0.12 0.64 0.2 0.96 0.2 0.44 0 0.88-0.12 1.24-0.36l2.76 2.12c-0.080 0.24-0.080 0.44-0.080 0.72 0 1.32 1.080 2.36 2.36 2.36s2.36-1.080 2.36-2.36c0-0.28-0.040-0.56-0.12-0.8l4.8-4.080c0.32 0.2 0.72 0.28 1.16 0.28 1.32 0 2.36-1.080 2.36-2.36-0.040-1.2-1.16-2.28-2.44-2.28zM2.36 21c-0.36 0-0.68-0.32-0.68-0.68 0-0.4 0.32-0.68 0.68-0.68s0.68 0.32 0.68 0.68c0 0.36-0.28 0.68-0.68 0.68zM8.24 13.76c0-0.4 0.32-0.68 0.68-0.68s0.68 0.32 0.68 0.68-0.32 0.68-0.68 0.68c-0.36 0-0.68-0.32-0.68-0.68zM15.2 19.28c-0.4 0-0.68-0.32-0.68-0.68s0.32-0.68 0.68-0.68 0.68 0.32 0.68 0.68c-0.040 0.4-0.28 0.68-0.68 0.68zM23.36 12.36c-0.36 0-0.68-0.32-0.68-0.68 0-0.4 0.32-0.68 0.68-0.68 0.4 0 0.68 0.32 0.68 0.68 0 0.4-0.32 0.68-0.68 0.68z"></path>
-                            </svg></button></li>
-                        <li>
-                            <span class="badge text-bg-light rounded-pill mb-2">Line thickness</span>
-                            <input type="number" id="thickness" class="input-padding"> </input>
-                        </li>
-                    </div>
-                </div>
-                <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;">
+                </a>
+            </li>
+            </ul>
+            
+                <div title="File" class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;">
                     <div class="dropdown border-top">
                         <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -154,11 +162,12 @@
                         <ul class="dropdown-menu">
                             
                             <li>
-                                <button id="saveButton" class=" btn btn-light rounded-pill px-3 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right"><svg width="25px" height="25px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>folder_type_json_opened</title><path d="M27.4,5.5H18.2L16.1,9.7H4.3v4H.5L4.3,26.5H29.5V5.5ZM20.2,7.6h7.1V9.7H19.2Zm5.5,6.1H6.6V11.8H27.4v7.626Z" style="fill:#dbd27b"/><path d="M11,20.146a2.089,2.089,0,0,0,1.307-.431,1.977,1.977,0,0,0,.672-1.132,12.666,12.666,0,0,0,.179-2.452q.009-1.737.062-2.288a4.355,4.355,0,0,1,.349-1.4,2.511,2.511,0,0,1,.63-.847,2.545,2.545,0,0,1,.961-.484,5.737,5.737,0,0,1,1.288-.1h.584v1.633h-.323a1.95,1.95,0,0,0-1.437.39,2.827,2.827,0,0,0-.355,1.742,29.971,29.971,0,0,1-.114,3.443,3.939,3.939,0,0,1-.641,1.716A3.8,3.8,0,0,1,12.74,21,3.172,3.172,0,0,1,14.4,22.46a7.371,7.371,0,0,1,.516,3.22q0,2.028.042,2.415a1.459,1.459,0,0,0,.42.984,2.207,2.207,0,0,0,1.328.281h.323V31h-.584a4.7,4.7,0,0,1-1.479-.167,2.482,2.482,0,0,1-1.105-.774A2.8,2.8,0,0,1,13.3,28.7,20.043,20.043,0,0,1,13.158,26a13.751,13.751,0,0,0-.179-2.587,2,2,0,0,0-.672-1.134A2.072,2.072,0,0,0,11,21.845Z" style="fill:#f5de19"/><path d="M31,21.841a2.079,2.079,0,0,0-1.307.437,2,2,0,0,0-.672,1.133A13.7,13.7,0,0,0,28.844,26,20.046,20.046,0,0,1,28.7,28.7a2.785,2.785,0,0,1-.568,1.358,2.486,2.486,0,0,1-1.105.775,4.731,4.731,0,0,1-1.479.166h-.584V29.362h.323a2.2,2.2,0,0,0,1.328-.28,1.461,1.461,0,0,0,.422-.988q.042-.386.042-2.416a7.364,7.364,0,0,1,.516-3.219A3.174,3.174,0,0,1,29.26,21a3.807,3.807,0,0,1-1.419-1.071,3.937,3.937,0,0,1-.64-1.716,29.98,29.98,0,0,1-.115-3.443,2.823,2.823,0,0,0-.354-1.742,1.953,1.953,0,0,0-1.438-.39h-.323V11h.584a5.71,5.71,0,0,1,1.285.1,2.566,2.566,0,0,1,.959.484,2.531,2.531,0,0,1,.63.848,4.373,4.373,0,0,1,.348,1.4q.053.551.063,2.288a12.7,12.7,0,0,0,.177,2.455,1.984,1.984,0,0,0,.671,1.128A2.1,2.1,0,0,0,31,20.147Z" style="fill:#f5de19"/></svg></button>
+                                <button  title="Save JSON Diagram" id="saveButton" class=" btn btn-light rounded-pill px-3 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                                    <svg width="25px" height="25px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>folder_type_json_opened</title><path d="M27.4,5.5H18.2L16.1,9.7H4.3v4H.5L4.3,26.5H29.5V5.5ZM20.2,7.6h7.1V9.7H19.2Zm5.5,6.1H6.6V11.8H27.4v7.626Z" style="fill:#dbd27b"/><path d="M11,20.146a2.089,2.089,0,0,0,1.307-.431,1.977,1.977,0,0,0,.672-1.132,12.666,12.666,0,0,0,.179-2.452q.009-1.737.062-2.288a4.355,4.355,0,0,1,.349-1.4,2.511,2.511,0,0,1,.63-.847,2.545,2.545,0,0,1,.961-.484,5.737,5.737,0,0,1,1.288-.1h.584v1.633h-.323a1.95,1.95,0,0,0-1.437.39,2.827,2.827,0,0,0-.355,1.742,29.971,29.971,0,0,1-.114,3.443,3.939,3.939,0,0,1-.641,1.716A3.8,3.8,0,0,1,12.74,21,3.172,3.172,0,0,1,14.4,22.46a7.371,7.371,0,0,1,.516,3.22q0,2.028.042,2.415a1.459,1.459,0,0,0,.42.984,2.207,2.207,0,0,0,1.328.281h.323V31h-.584a4.7,4.7,0,0,1-1.479-.167,2.482,2.482,0,0,1-1.105-.774A2.8,2.8,0,0,1,13.3,28.7,20.043,20.043,0,0,1,13.158,26a13.751,13.751,0,0,0-.179-2.587,2,2,0,0,0-.672-1.134A2.072,2.072,0,0,0,11,21.845Z" style="fill:#f5de19"/><path d="M31,21.841a2.079,2.079,0,0,0-1.307.437,2,2,0,0,0-.672,1.133A13.7,13.7,0,0,0,28.844,26,20.046,20.046,0,0,1,28.7,28.7a2.785,2.785,0,0,1-.568,1.358,2.486,2.486,0,0,1-1.105.775,4.731,4.731,0,0,1-1.479.166h-.584V29.362h.323a2.2,2.2,0,0,0,1.328-.28,1.461,1.461,0,0,0,.422-.988q.042-.386.042-2.416a7.364,7.364,0,0,1,.516-3.219A3.174,3.174,0,0,1,29.26,21a3.807,3.807,0,0,1-1.419-1.071,3.937,3.937,0,0,1-.64-1.716,29.98,29.98,0,0,1-.115-3.443,2.823,2.823,0,0,0-.354-1.742,1.953,1.953,0,0,0-1.438-.39h-.323V11h.584a5.71,5.71,0,0,1,1.285.1,2.566,2.566,0,0,1,.959.484,2.531,2.531,0,0,1,.63.848,4.373,4.373,0,0,1,.348,1.4q.053.551.063,2.288a12.7,12.7,0,0,0,.177,2.455,1.984,1.984,0,0,0,.671,1.128A2.1,2.1,0,0,0,31,20.147Z" style="fill:#f5de19"/></svg></button>
                                 
                             </li>
                             <li>
-                                <button id="saveAsImageButton" class="btn btn-light rounded-pill px-3 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                                <button title="Save as JPEG" id="saveAsImageButton" class="btn btn-light rounded-pill px-3 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
                                     <svg width="25px" height="25px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 
                                     <g id="layer1">
@@ -170,12 +179,32 @@
                                     </svg></button>
                             </li>
                             <li>
-                                <button id="saveAsPDF" onclick="saveCanvasAsPDF(canvas, 'downloadedCanvas.pdf');" class="btn btn-light rounded-pill px-3 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right"></button>
+                                <button title="Save as PDF" id="saveAsPDF"  class="btn btn-light rounded-pill px-3 " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right">
+                                    <svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                            viewBox="0 0 512 512" xml:space="preserve">
+                                        <path style="fill:#E2E5E7;" d="M128,0c-17.6,0-32,14.4-32,32v448c0,17.6,14.4,32,32,32h320c17.6,0,32-14.4,32-32V128L352,0H128z"/>
+                                        <path style="fill:#B0B7BD;" d="M384,128h96L352,0v96C352,113.6,366.4,128,384,128z"/>
+                                        <polygon style="fill:#CAD1D8;" points="480,224 384,128 480,128 "/>
+                                        <path style="fill:#F15642;" d="M416,416c0,8.8-7.2,16-16,16H48c-8.8,0-16-7.2-16-16V256c0-8.8,7.2-16,16-16h352c8.8,0,16,7.2,16,16
+                                            V416z"/>
+                                        <g>
+                                            <path style="fill:#FFFFFF;" d="M101.744,303.152c0-4.224,3.328-8.832,8.688-8.832h29.552c16.64,0,31.616,11.136,31.616,32.48
+                                                c0,20.224-14.976,31.488-31.616,31.488h-21.36v16.896c0,5.632-3.584,8.816-8.192,8.816c-4.224,0-8.688-3.184-8.688-8.816V303.152z
+                                                M118.624,310.432v31.872h21.36c8.576,0,15.36-7.568,15.36-15.504c0-8.944-6.784-16.368-15.36-16.368H118.624z"/>
+                                            <path style="fill:#FFFFFF;" d="M196.656,384c-4.224,0-8.832-2.304-8.832-7.92v-72.672c0-4.592,4.608-7.936,8.832-7.936h29.296
+                                                c58.464,0,57.184,88.528,1.152,88.528H196.656z M204.72,311.088V368.4h21.232c34.544,0,36.08-57.312,0-57.312H204.72z"/>
+                                            <path style="fill:#FFFFFF;" d="M303.872,312.112v20.336h32.624c4.608,0,9.216,4.608,9.216,9.072c0,4.224-4.608,7.68-9.216,7.68
+                                                h-32.624v26.864c0,4.48-3.184,7.92-7.664,7.92c-5.632,0-9.072-3.44-9.072-7.92v-72.672c0-4.592,3.456-7.936,9.072-7.936h44.912
+                                                c5.632,0,8.96,3.344,8.96,7.936c0,4.096-3.328,8.704-8.96,8.704h-37.248V312.112z"/>
+                                        </g>
+                                        <path style="fill:#CAD1D8;" d="M400,432H96v16h304c8.8,0,16-7.2,16-16v-16C416,424.8,408.8,432,400,432z"/>
+                                        </svg>
+                                </button>
                             </li>
                         </ul>
                     </div>
                    
-                    <div class="dropdown border-top">
+                    <div title="Upload Diagram" class="dropdown border-top">
                         <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1.25C12.2189 1.25 12.427 1.34567 12.5694 1.51191L15.5694 5.01191C15.839 5.3264 15.8026 5.79988 15.4881 6.06944C15.1736 6.33901 14.7001 6.30259 14.4306 5.98809L12.75 4.02744L12.75 15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15L11.25 4.02744L9.56944 5.98809C9.29988 6.30259 8.8264 6.33901 8.51191 6.06944C8.19741 5.79988 8.16099 5.3264 8.43056 5.01191L11.4306 1.51191C11.573 1.34567 11.7811 1.25 12 1.25ZM6.99583 8.25196C7.41003 8.24966 7.74768 8.58357 7.74999 8.99778C7.7523 9.41198 7.41838 9.74963 7.00418 9.75194C5.91068 9.75803 5.1356 9.78642 4.54735 9.89448C3.98054 9.99859 3.65246 10.1658 3.40901 10.4092C3.13225 10.686 2.9518 11.0746 2.85315 11.8083C2.75159 12.5637 2.75 13.5648 2.75 15.0002V16.0002C2.75 17.4356 2.75159 18.4367 2.85315 19.1921C2.9518 19.9259 3.13225 20.3144 3.40901 20.5912C3.68577 20.868 4.07434 21.0484 4.80812 21.1471C5.56347 21.2486 6.56458 21.2502 8 21.2502H16C17.4354 21.2502 18.4365 21.2486 19.1919 21.1471C19.9257 21.0484 20.3142 20.868 20.591 20.5912C20.8678 20.3144 21.0482 19.9259 21.1469 19.1921C21.2484 18.4367 21.25 17.4356 21.25 16.0002V15.0002C21.25 13.5648 21.2484 12.5637 21.1469 11.8083C21.0482 11.0746 20.8678 10.686 20.591 10.4092C20.3475 10.1658 20.0195 9.99859 19.4527 9.89448C18.8644 9.78642 18.0893 9.75803 16.9958 9.75194C16.5816 9.74963 16.2477 9.41198 16.25 8.99778C16.2523 8.58357 16.59 8.24966 17.0042 8.25196C18.0857 8.25798 18.9871 8.28387 19.7236 8.41916C20.4816 8.55839 21.1267 8.82363 21.6517 9.34856C22.2536 9.95048 22.5125 10.7084 22.6335 11.6085C22.75 12.4754 22.75 13.5778 22.75 14.9453V16.0551C22.75 17.4227 22.75 18.525 22.6335 19.392C22.5125 20.2921 22.2536 21.0499 21.6517 21.6519C21.0497 22.2538 20.2919 22.5127 19.3918 22.6337C18.5248 22.7503 17.4225 22.7502 16.0549 22.7502H7.94513C6.57754 22.7502 5.47522 22.7503 4.60825 22.6337C3.70814 22.5127 2.95027 22.2538 2.34835 21.6519C1.74643 21.0499 1.48754 20.2921 1.36652 19.392C1.24996 18.525 1.24998 17.4227 1.25 16.0551V14.9453C1.24998 13.5777 1.24996 12.4754 1.36652 11.6085C1.48754 10.7084 1.74643 9.95048 2.34835 9.34856C2.87328 8.82363 3.51835 8.55839 4.27635 8.41916C5.01291 8.28386 5.9143 8.25798 6.99583 8.25196Z" fill="#1C274C"/>
@@ -249,6 +278,8 @@
 
     <script src="lib/jscolor.js"></script>
     <script src="lib/fabric.min.js"></script>
+    <script src="lib/html2canvas.min.js"></script>
+    <script src="lib/jspdf.umd.min.js"></script>
     <script src="js/index.js"></script>
 
 </body>
